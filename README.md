@@ -2,7 +2,7 @@
 
 Ticky - a Tic Tac Toe game, implemented in python, pygame. It includes a unbeatable computer AI. Have a try : )
 
-If you like it, PLEASE give it a star, Thanks!
+**If you like it, PLEASE give it a star, Thanks!**
 
 ### Require
 
