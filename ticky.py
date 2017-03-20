@@ -96,7 +96,7 @@ def unit_score(winner,depth):
 
 def get_available_step(board):
 	ava_step = []
-	for i in xrange(9):
+	for i in range(9):
 		if board[i] == BLANK:
 			ava_step.append(i)
 	return ava_step
@@ -148,8 +148,8 @@ def change_to_player(player):
 
 
 #def draw_the_game(board):
-#	for i in xrange(3):
-#		for j in xrange(3):
+#	for i in range(3):
+#		for j in range(3):
 #			print change_to_player(board[i*3+j]),
 #		print ' '
 
@@ -159,8 +159,8 @@ def drawBoard(board, message):
         textSurf, textRect = makeText(message, MESSAGECOLOR, BGCOLOR, 5, 5)
         DISPLAYSURF.blit(textSurf, textRect)
 
-    for tilex in xrange(3):
-        for tiley in xrange(3):
+    for tilex in range(3):
+        for tiley in range(3):
         	if board[tilex*3+tiley] != BLANK:
                  drawTile(tilex, tiley, board[tilex*3+tiley])
 
@@ -202,8 +202,8 @@ def symbol_to_str(symbol):
 
 def getSpotClicked(x, y):
     # from the x & y pixel coordinates, get the x & y board coordinates
-    for tileX in xrange(3):
-        for tileY in xrange(3):
+    for tileX in range(3):
+        for tileY in range(3):
             left, top = getLeftTopOfTile(tileX, tileY)
             tileRect = pygame.Rect(left, top, TILESIZE, TILESIZE)
             if tileRect.collidepoint(x, y):
