@@ -193,7 +193,12 @@ def getSpotClicked(x, y):
 def board_to_step(spotx, spoty):
     return spotx * 3 + spoty
 
-
+def check_move_legal(spotx, spoty, board):
+    step = board_to_step(spotx,spoty)
+    if board[step] == BLANK:
+        return True
+    else:
+        return False
 def main():
     global FPSCLOCK, DISPLAYSURF, BASICFONT, NEW_SURF, NEW_RECT
     pygame.init()
@@ -220,7 +225,7 @@ def main():
                         msg = "Ticky - Unbeatable Tic Tac Toe AI"
                         drawBoard(board, msg)
                         pygame.display.update()
-        if (spotx, spoty) != (None, None):
+        if (spotx, spoty) != (None, None) and check_move_legal(spotx, spoty, board):
             if not flag:
                 player = PLAYER_O
                 next_step = board_to_step(spotx, spoty)
