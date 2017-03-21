@@ -1,6 +1,4 @@
-
-
-import random, sys, time, pygame
+import pygame
 from pygame.locals import *
 
 
@@ -108,13 +106,16 @@ def minmax(board, depth):
         choice = steps[min_value_index]
         return min(scores)
 
+
 def update_state(board, step, depth):
     board = list(board)
     board[step] = PLAYER_X if depth % 2 else PLAYER_O
     return board
 
+
 def update_board(board, step, player):
     board[step] = player
+
 
 def change_to_player(player):
     if player == PLAYER_O:
@@ -125,12 +126,6 @@ def change_to_player(player):
         return '-'
 
 
-#def draw_the_game(board):
-#    for i in range(3):
-#        for j in range(3):
-#            print change_to_player(board[i*3+j]),
-#        print ' '
-
 def drawBoard(board, message):
     DISPLAYSURF.fill(BGCOLOR)
     if message:
@@ -140,7 +135,7 @@ def drawBoard(board, message):
     for tilex in range(3):
         for tiley in range(3):
             if board[tilex*3+tiley] != BLANK:
-                 drawTile(tilex, tiley, board[tilex*3+tiley])
+                drawTile(tilex, tiley, board[tilex*3+tiley])
 
     left, top = getLeftTopOfTile(0, 0)
     width = BOARDWIDTH * TILESIZE
@@ -149,21 +144,26 @@ def drawBoard(board, message):
 
     DISPLAYSURF.blit(NEW_SURF, NEW_RECT)
 
+
 def getLeftTopOfTile(tileX, tileY):
     left = XMARGIN + (tileX * TILESIZE) + (tileX - 1)
     top = YMARGIN + (tileY * TILESIZE) + (tileY - 1)
     return (left, top)
 
+
 def makeText(text, color, bgcolor, top, left):
-    # create the Surface and Rect objects for some text.
+    '''Create the Surface and Rect objects for some text.'''
     textSurf = BASICFONT.render(text, True, color, bgcolor)
     textRect = textSurf.get_rect()
     textRect.topleft = (top, left)
     return (textSurf, textRect)
 
+
 def drawTile(tilex, tiley, symbol, adjx=0, adjy=0):
-    # draw a tile at board coordinates tilex and tiley, optionally a few
-    # pixels over (determined by adjx and adjy)
+    '''
+    Draw a tile at board coordinates tilex and tiley, optionally a few
+    pixels over (determined by adjx and adjy).
+    '''
     left, top = getLeftTopOfTile(tilex, tiley)
     pygame.draw.rect(DISPLAYSURF, TILECOLOR, (left + adjx, top + adjy, TILESIZE, TILESIZE))
     textSurf = BASICFONT.render(symbol_to_str(symbol), True, TEXTCOLOR)
@@ -175,11 +175,12 @@ def drawTile(tilex, tiley, symbol, adjx=0, adjy=0):
 def symbol_to_str(symbol):
     if symbol == PLAYER_O:
         return 'O'
-    elif symbol ==PLAYER_X:
+    elif symbol == PLAYER_X:
         return 'X'
 
+
 def getSpotClicked(x, y):
-    # from the x & y pixel coordinates, get the x & y board coordinates
+    '''From the x & y pixel coordinates, get the x & y board coordinates.'''
     for tileX in range(3):
         for tileY in range(3):
             left, top = getLeftTopOfTile(tileX, tileY)
@@ -188,8 +189,10 @@ def getSpotClicked(x, y):
                 return (tileX, tileY)
     return (None, None)
 
+
 def board_to_step(spotx, spoty):
     return spotx * 3 + spoty
+
 
 def main():
     global FPSCLOCK, DISPLAYSURF, BASICFONT, NEW_SURF, NEW_RECT
@@ -198,11 +201,11 @@ def main():
     DISPLAYSURF = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT))
     pygame.display.set_caption('Ticky')
     BASICFONT = pygame.font.Font('freesansbold.ttf', BASICFONTSIZE)
-    NEW_SURF,   NEW_RECT   = makeText('New Game', TEXTCOLOR, TILECOLOR, WINDOWWIDTH - 120, WINDOWHEIGHT - 60)
+    NEW_SURF, NEW_RECT = makeText('New Game', TEXTCOLOR, TILECOLOR, WINDOWWIDTH - 120, WINDOWHEIGHT - 60)
     board = [BLANK] * 9
     flag = 0
     msg = "Ticky - Unbeatable Tic Tac Toe AI"
-    drawBoard(board,msg)
+    drawBoard(board, msg)
     pygame.display.update()
     computer_turn = 0
     while True:
@@ -221,7 +224,7 @@ def main():
             if not flag:
                 player = PLAYER_O
                 next_step = board_to_step(spotx, spoty)
-                update_board(board,next_step, player)
+                update_board(board, next_step, player)
                 result = check_win_game(board)
                 if result != CONT_GAME:
                     flag = 1
