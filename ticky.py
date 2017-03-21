@@ -228,6 +228,8 @@ def main():
         if (spotx, spoty) != (None, None) and check_move_legal(spotx, spoty, board) and not game_over:
             next_step = board_to_step(spotx, spoty)
             update_board(board, next_step, PLAYER_O)
+            drawBoard(board, msg)
+            pygame.display.update()
 
             minmax(board, 0)
             update_board(board, choice, PLAYER_X)
