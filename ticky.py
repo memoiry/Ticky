@@ -95,7 +95,7 @@ def minmax(board, depth):
     steps = []
 
     for step in get_available_step(board):
-        score = minmax(update_state(board,step,depth),depth)
+        score = minmax(update_state(board, step, depth), depth)
         scores.append(score)
         steps.append(step)
 
@@ -110,10 +110,7 @@ def minmax(board, depth):
 
 def update_state(board, step, depth):
     board = list(board)
-    if depth % 2 ==1:
-        board[step] = PLAYER_X
-    else:
-        board[step] = PLAYER_O
+    board[step] = PLAYER_X if depth % 2 else PLAYER_O
     return board
 
 def update_board(board, step, player):
