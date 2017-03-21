@@ -1,6 +1,6 @@
-# Ticky - Unbeatable Tic Tac Toe AI
+# Ticky
 
-Ticky - a Tic Tac Toe game, implemented in python, pygame. It includes a unbeatable computer AI. Have a try : )
+A Tic Tac Toe game, implemented in python, pygame. It includes a unbeatable computer AI. Have a Fun!
 
 **If you like it, PLEASE give it a star, Thanks!**
 
