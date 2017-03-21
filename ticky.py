@@ -208,56 +208,42 @@ def main():
     BASICFONT = pygame.font.Font('freesansbold.ttf', BASICFONTSIZE)
     NEW_SURF, NEW_RECT = makeText('New Game', TEXTCOLOR, TILECOLOR, WINDOWWIDTH - 120, WINDOWHEIGHT - 60)
     board = [BLANK] * 9
-    flag = 0
+    game_over = False
     msg = "Ticky - Unbeatable Tic Tac Toe AI"
     drawBoard(board, msg)
     pygame.display.update()
-    computer_turn = 0
+
     while True:
-        (spotx, spoty) = (None, None)
+        spotx, spoty = None, None
         for event in pygame.event.get():
             if event.type == MOUSEBUTTONUP:
                 spotx, spoty = getSpotClicked(event.pos[0], event.pos[1])
                 if (spotx, spoty) == (None, None):
                     if NEW_RECT.collidepoint(event.pos):
                         board = [BLANK] * 9
-                        flag = 0
+                        game_over = False
                         msg = "Ticky - Unbeatable Tic Tac Toe AI"
                         drawBoard(board, msg)
                         pygame.display.update()
-        if (spotx, spoty) != (None, None) and check_move_legal(spotx, spoty, board):
-            if not flag:
-                player = PLAYER_O
-                next_step = board_to_step(spotx, spoty)
-                update_board(board, next_step, player)
-                result = check_win_game(board)
-                if result != CONT_GAME:
-                    flag = 1
-                    if result == PLAYER_X:
-                        msg = "Ticky win!"
-                    elif result == PLAYER_O:
-                        msg = "you win, awesome!"
-                    else:
-                        msg = "Draw game"
-                drawBoard(board, msg)
-                pygame.display.update()
-                computer_turn = 1
-            if not flag and computer_turn:
-                score = minmax(board, 0)
-                player = PLAYER_X
-                update_board(board, choice, player)
-                result = check_win_game(board)
-                if result != CONT_GAME:
-                    flag = 1
-                    if result == PLAYER_X:
-                        msg = "Ticky win!"
-                    elif result == PLAYER_O:
-                        msg = "you win, awesome!"
-                    else:
-                        msg = "Draw game"
-                drawBoard(board, msg)
-                pygame.display.update()
-                computer_turn = 0
+        if (spotx, spoty) != (None, None) and check_move_legal(spotx, spoty, board) and not game_over:
+            next_step = board_to_step(spotx, spoty)
+            update_board(board, next_step, PLAYER_O)
+
+            minmax(board, 0)
+            update_board(board, choice, PLAYER_X)
+
+            result = check_win_game(board)
+            game_over = (result != CONT_GAME)
+
+            if result == PLAYER_X:
+                msg = "Ticky win!"
+            elif result == PLAYER_O:
+                msg = "you win, awesome!"
+            elif result == DRAW_GAME:
+                msg = "Draw game"
+
+            drawBoard(board, msg)
+            pygame.display.update()
 
 
 if __name__ == '__main__':
