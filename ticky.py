@@ -47,46 +47,31 @@ YMARGIN = int((WINDOWHEIGHT - (TILESIZE * BOARDHEIGHT + (BOARDHEIGHT - 1))) / 2)
 
 choice = 0
 
-def check_draw_game(board):
-    return True if sum(board)%10 == 9 else False
 
 def check_win_game(board):
-    if ((board[0]+board[1]+board[2]) == PLAYER_O_WIN):
-        return PLAYER_O
-    elif ((board[0]+board[1]+board[2]) == PLAYER_X_WIN):
-        return PLAYER_X
-    elif ((board[3]+board[4]+board[5]) == PLAYER_O_WIN):
-        return PLAYER_O
-    elif ((board[3]+board[4]+board[5]) == PLAYER_X_WIN):
-        return PLAYER_X
-    elif ((board[6]+board[7]+board[8]) == PLAYER_O_WIN):
-        return PLAYER_O
-    elif ((board[6]+board[7]+board[8]) == PLAYER_X_WIN):
-        return PLAYER_X
-    elif ((board[0]+board[3]+board[6]) == PLAYER_O_WIN):
-        return PLAYER_O
-    elif ((board[0]+board[3]+board[6]) == PLAYER_X_WIN):
-        return PLAYER_X
-    elif ((board[1]+board[4]+board[7]) == PLAYER_O_WIN):
-        return PLAYER_O
-    elif ((board[1]+board[4]+board[7]) == PLAYER_X_WIN):
-        return PLAYER_X
-    elif ((board[2]+board[5]+board[8]) == PLAYER_O_WIN):
-        return PLAYER_O
-    elif ((board[2]+board[5]+board[8]) == PLAYER_X_WIN):
-        return PLAYER_X
-    elif ((board[0]+board[4]+board[8]) == PLAYER_O_WIN):
-        return PLAYER_O
-    elif ((board[0]+board[4]+board[8]) == PLAYER_X_WIN):
-        return PLAYER_X
-    elif ((board[2]+board[4]+board[6]) == PLAYER_O_WIN):
-        return PLAYER_O
-    elif ((board[2]+board[4]+board[6]) == PLAYER_X_WIN):
-        return PLAYER_X
-    elif check_draw_game(board):
-        return DRAW_GAME
-    else:
-        return CONT_GAME
+    def check_draw_game():
+        return sum(board)%10 == 9
+
+    def check_horizontal(player):
+        for i in [0, 3, 6]:
+            if sum(board[i:i+3]) == 3 * player:
+                return player
+
+    def check_vertical(player):
+        for i in range(3):
+            if sum(board[i::3]) == 3 * player:
+                return player
+
+    def check_diagonals(player):
+        if (sum(board[0::4]) == 3 * player) or (sum(board[2:7:2]) == 3 * player):
+            return player
+
+    for player in [PLAYER_X, PLAYER_O]:
+        if any([check_horizontal(player), check_vertical(player), check_diagonals(player)]):
+            return player
+
+    return DRAW_GAME if check_draw_game() else CONT_GAME
+
 
 def unit_score(winner,depth):
     if winner == DRAW_GAME:
