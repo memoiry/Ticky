@@ -193,12 +193,12 @@ def getSpotClicked(x, y):
 def board_to_step(spotx, spoty):
     return spotx * 3 + spoty
 
+
 def check_move_legal(spotx, spoty, board):
-    step = board_to_step(spotx,spoty)
-    if board[step] == BLANK:
-        return True
-    else:
-        return False
+    step = board_to_step(spotx, spoty)
+    return board[step] == BLANK
+
+
 def main():
     global FPSCLOCK, DISPLAYSURF, BASICFONT, NEW_SURF, NEW_RECT
     pygame.init()
