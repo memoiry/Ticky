@@ -73,19 +73,15 @@ def check_win_game(board):
     return DRAW_GAME if check_draw_game() else CONT_GAME
 
 
-def unit_score(winner,depth):
+def unit_score(winner, depth):
     if winner == DRAW_GAME:
         return 0
     else:
         return 10 - depth if winner == PLAYER_X else depth - 10
 
-def get_available_step(board):
-    ava_step = []
-    for i in range(9):
-        if board[i] == BLANK:
-            ava_step.append(i)
-    return ava_step
 
+def get_available_step(board):
+    return [i for i in range(9) if board[i] == BLANK]
 
 
 def minmax(board, depth):
