@@ -187,7 +187,7 @@ def getSpotClicked(x, y):
             tileRect = pygame.Rect(left, top, TILESIZE, TILESIZE)
             if tileRect.collidepoint(x, y):
                 return (tileX, tileY)
-    return (None, None)
+    return None
 
 
 def board_to_step(spotx, spoty):
@@ -214,19 +214,18 @@ def main():
     pygame.display.update()
 
     while True:
-        spotx, spoty = None, None
+        coords = None
         for event in pygame.event.get():
             if event.type == MOUSEBUTTONUP:
-                spotx, spoty = getSpotClicked(event.pos[0], event.pos[1])
-                if (spotx, spoty) == (None, None):
-                    if NEW_RECT.collidepoint(event.pos):
-                        board = [BLANK] * 9
-                        game_over = False
-                        msg = "Ticky - Unbeatable Tic Tac Toe AI"
-                        drawBoard(board, msg)
-                        pygame.display.update()
-        if (spotx, spoty) != (None, None) and check_move_legal(spotx, spoty, board) and not game_over:
-            next_step = board_to_step(spotx, spoty)
+                coords = getSpotClicked(event.pos[0], event.pos[1])
+                if not coords and NEW_RECT.collidepoint(event.pos):
+                    board = [BLANK] * 9
+                    game_over = False
+                    msg = "Ticky - Unbeatable Tic Tac Toe AI"
+                    drawBoard(board, msg)
+                    pygame.display.update()
+        if coords and check_move_legal(*coords, board) and not game_over:
+            next_step = board_to_step(*coords)
             update_board(board, next_step, PLAYER_O)
             drawBoard(board, msg)
             pygame.display.update()
