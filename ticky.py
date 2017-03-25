@@ -224,7 +224,7 @@ def main():
                     msg = "Ticky - Unbeatable Tic Tac Toe AI"
                     drawBoard(board, msg)
                     pygame.display.update()
-        if coords and check_move_legal(*coords, board) and not game_over:
+        if coords and check_move_legal(*([coords[0],coords[1]]+[board])) and not game_over:
             next_step = board_to_step(*coords)
             update_board(board, next_step, PLAYER_O)
             drawBoard(board, msg)
