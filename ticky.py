@@ -198,9 +198,12 @@ def check_move_legal(coords, board):
     step = board_to_step(*coords)
     return board[step] == BLANK
 
+def play_game():
+    pass
 
 def main():
     global FPSCLOCK, DISPLAYSURF, BASICFONT, NEW_SURF, NEW_RECT
+    two_player = True
     pygame.init()
     FPSCLOCK = pygame.time.Clock()
     DISPLAYSURF = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT))
@@ -224,14 +227,16 @@ def main():
                     msg = "Ticky - Unbeatable Tic Tac Toe AI"
                     drawBoard(board, msg)
                     pygame.display.update()
-        if coords and check_move_legal(coords, board) and not game_over:
+        if coords and check_move_legal(coords, board) and two_player and not game_over:
             next_step = board_to_step(*coords)
             update_board(board, next_step, PLAYER_O)
             drawBoard(board, msg)
             pygame.display.update()
 
-            minmax(board, 0)
-            update_board(board, choice, PLAYER_X)
+            next_step = board_to_step(*coords)
+            update_board(board, next_step, PLAYER_X)
+            drawBoard(board, msg)
+            pygame.display.update()
 
             result = check_win_game(board)
             game_over = (result != CONT_GAME)
