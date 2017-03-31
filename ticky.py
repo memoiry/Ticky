@@ -143,6 +143,7 @@ def drawBoard(board, message):
     pygame.draw.rect(DISPLAYSURF, BORDERCOLOR, (left - 5, top - 5, width + 11, height + 11), 4)
 
     DISPLAYSURF.blit(NEW_SURF, NEW_RECT)
+    DISPLAYSURF.blit(NEW_SURF2, NEW_RECT2)
 
 
 def getLeftTopOfTile(tileX, tileY):
@@ -198,17 +199,19 @@ def check_move_legal(coords, board):
     step = board_to_step(*coords)
     return board[step] == BLANK
 
-
 def main():
-    global FPSCLOCK, DISPLAYSURF, BASICFONT, NEW_SURF, NEW_RECT
+    global FPSCLOCK, DISPLAYSURF, BASICFONT, NEW_SURF, NEW_RECT, NEW_SURF2, NEW_RECT2
+    two_player = False #by default false
     pygame.init()
     FPSCLOCK = pygame.time.Clock()
     DISPLAYSURF = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT))
     pygame.display.set_caption('Ticky')
     BASICFONT = pygame.font.Font('freesansbold.ttf', BASICFONTSIZE)
-    NEW_SURF, NEW_RECT = makeText('New Game', TEXTCOLOR, TILECOLOR, WINDOWWIDTH - 120, WINDOWHEIGHT - 60)
+    NEW_SURF, NEW_RECT = makeText('vs AI', TEXTCOLOR, TILECOLOR, WINDOWWIDTH - 120, WINDOWHEIGHT - 60)
+    NEW_SURF2, NEW_RECT2 = makeText('vs Human', TEXTCOLOR, TILECOLOR, WINDOWWIDTH - 240, WINDOWHEIGHT - 60)
     board = [BLANK] * 9
     game_over = False
+    x_turn = True
     msg = "Ticky - Unbeatable Tic Tac Toe AI"
     drawBoard(board, msg)
     pygame.display.update()
@@ -224,22 +227,41 @@ def main():
                     msg = "Ticky - Unbeatable Tic Tac Toe AI"
                     drawBoard(board, msg)
                     pygame.display.update()
+                    two_player = False
+                if not coords and NEW_RECT2.collidepoint(event.pos):
+                    board = [BLANK] * 9
+                    game_over = False
+                    msg = "Ticky - Unbeatable Tic Tac Toe AI"
+                    drawBoard(board, msg)
+                    pygame.display.update()
+                    two_player = True
         if coords and check_move_legal(coords, board) and not game_over:
-            next_step = board_to_step(*coords)
-            update_board(board, next_step, PLAYER_O)
-            drawBoard(board, msg)
-            pygame.display.update()
+            if two_player:
+                next_step = board_to_step(*coords)
+                if x_turn:
+                    update_board(board, next_step, PLAYER_X)
+                    x_turn = False
+                else:
+                    update_board(board, next_step, PLAYER_O)
+                    x_turn = True
+                drawBoard(board, msg)
+                pygame.display.update()
 
-            minmax(board, 0)
-            update_board(board, choice, PLAYER_X)
+            if not two_player:
+                next_step = board_to_step(*coords)
+                update_board(board, next_step, PLAYER_X)
+                drawBoard(board, msg)
+                pygame.display.update()
+                minmax(board, 0)
+                update_board(board, choice, PLAYER_O)
 
             result = check_win_game(board)
             game_over = (result != CONT_GAME)
 
             if result == PLAYER_X:
-                msg = "Ticky win!"
+                msg = "X wins!"
             elif result == PLAYER_O:
-                msg = "you win, awesome!"
+                msg = "O wins!"
             elif result == DRAW_GAME:
                 msg = "Draw game"
 
